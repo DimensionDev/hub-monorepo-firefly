@@ -40,9 +40,9 @@ export class HubReplicator {
   }
 
   public async start() {
-    setInterval(() => {
-      this.updateTableMetrics();
-    }, 5_000);
+    // setInterval(() => {
+    //   this.updateTableMetrics();
+    // }, 5_000);
     // await this.backfill();
     void this.eventsSubscriber.start();
   }
