@@ -451,6 +451,9 @@ export async function processMergeMessageHubEvent(hubEvent: MergeMessageHubEvent
   await executeTx(db, async (trx) => {
     await mergeMessage(message, trx, log, redis);
 
+    if (message.data && message.data.type === MessageType.USER_DATA_ADD) {
+      return;
+    }
     for (const deletedMessage of deletedMessages) {
       await deleteMessage(deletedMessage, trx, log, redis);
     }

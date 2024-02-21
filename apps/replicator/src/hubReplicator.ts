@@ -40,12 +40,11 @@ export class HubReplicator {
   }
 
   public async start() {
-    if (STATSD_HOST) {
-      setInterval(() => {
-        this.updateTableMetrics();
-      }, 5_000);
-    }
-    await this.backfill();
+    setInterval(() => {
+      this.updateTableMetrics();
+    }, 5_000);
+    // await this.backfill();
+    void this.eventsSubscriber.start();
   }
 
   public stop() {

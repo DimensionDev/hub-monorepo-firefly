@@ -1,0 +1,54 @@
+version: '3.9'
+
+services:
+  replicator-firefly:
+    image: farcasterxyz/replicator-firefly:latest
+    build: 
+      # context: firefly-replicator
+      dockerfile: ./Dockerfile.replicator
+    restart: unless-stopped
+    init: true
+    command: ['node', 'build/app.js', 'start']
+    environment:
+      - LOG_LEVEL
+      - HUB_HOST
+      - HUB_SSL
+      - POSTGRES_URL
+      - REDIS_URL
+      - STATSD_HOST
+      - COLORIZE
+      - WEB_UI_PORT
+      - CONCURRENCY
+      - PARTITIONS
+    ports:
+      - '${WEB_UI_PORT}:${WEB_UI_PORT}'
+    volumes:
+      - app-node_modules:/home/node/app/node_modules
+    depends_on:
+      - redis
+    networks:
+      - replicator-network
+
+  redis:
+    image: 'redis:7.2-alpine'
+    restart: unless-stopped
+    command: --save 1 1 --loglevel warning --maxmemory-policy noeviction
+    volumes:
+      - redis-data:/data
+    ports:
+      - '16379:6379'
+    healthcheck:
+      test: ['CMD-SHELL', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    networks:
+      - replicator-network
+
+volumes:
+  app-node_modules:
+  redis-data:
+
+networks:
+  replicator-network:
