@@ -43,7 +43,7 @@ export class HubReplicator {
     // setInterval(() => {
     //   this.updateTableMetrics();
     // }, 5_000);
-    // await this.backfill();
+    await this.backfill();
     void this.eventsSubscriber.start();
   }
 
