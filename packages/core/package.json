@@ -41,7 +41,6 @@
     "ethers5": "npm:ethers@^5.7.0",
     "node-gyp": "^9.4.0",
     "prettier-config-custom": "*",
-    "ts-proto": "^1.146.0",
-    "bs58": "5.0.0"
+    "ts-proto": "^1.146.0"
   }
 }
